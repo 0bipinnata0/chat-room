@@ -3,11 +3,11 @@ import {useWebsocket} from "../hooks/useWebsocket";
 import {Loading} from "../components/loading";
 import TalkScreen from "./talk";
 import {Area, State} from "../components";
-import {useRef, useState} from "react";
+import {useRef} from "react";
+import {useAuth} from "../hooks/useAuth";
 
 const AreaScreen = () => {
     const {loading, connected, receiveMessage, sendMessage} = useWebsocket()
-
 
     return (
         <Area>
@@ -19,13 +19,13 @@ const AreaScreen = () => {
 };
 
 const StateScreen = ({loading}: { loading: boolean }) => {
-    const [nameMap, setNameMap] = useState({id: '', value: ''});
+    const {nameMap, nameModify} = useAuth()
     const inputRef = useRef<HTMLInputElement>(null);
 
     const setName = () => {
         const input = inputRef.current
         if (input) {
-            setNameMap({id: (new Date().getTime()) + '', value: input.value})
+            nameModify(input.value)
         }
     }
 
@@ -33,7 +33,7 @@ const StateScreen = ({loading}: { loading: boolean }) => {
         <div>
             <div>已连接</div>
             {!nameMap.id ?
-                <div>设置姓名<input ref={inputRef} onBlur={setName} /></div> :
+                <div>设置姓名<input ref={inputRef} onBlur={setName}/></div> :
                 <div>你好: {nameMap.value}</div>
             }
         </div>

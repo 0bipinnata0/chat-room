@@ -1,10 +1,13 @@
 import React from 'react';
 import AuthenticatedScreen from "./authenticated-app";
+import {AuthProvider} from "./context/authContext";
 
 function App() {
     return (
         <div className="App">
-            <AuthenticatedScreen/>
+            <AuthProvider>
+                <AuthenticatedScreen/>
+            </AuthProvider>
         </div>
     );
 }
